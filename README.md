@@ -56,7 +56,7 @@ src/
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-username/liquid-glass-ui.git
+git clone https://github.com/uiforyou/liquid-glass-ui.git
 cd liquid-glass-ui
 
 # Install dependencies
