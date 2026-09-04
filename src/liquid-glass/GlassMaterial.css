@@ -1,0 +1,259 @@
+/* Liquid Glass Standalone Self-Contained Stylesheet (No external Tailwind required) */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body, #root {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: #0b0f14;
+  color: #fff;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  user-select: none;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Glass material design tokens */
+:root {
+  --lg-regular-bg: rgba(28, 28, 30, 0.72);
+  --lg-regular-blur: 26px;
+  --lg-regular-saturate: 160%;
+  
+  --lg-clear-bg: rgba(255, 255, 255, 0.08);
+  --lg-clear-blur: 20px;
+  
+  --lg-edge-hairline: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.28) 0%,
+    rgba(255, 255, 255, 0.10) 45%,
+    rgba(255, 255, 255, 0.03) 100%
+  );
+  
+  --lg-inner-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.15), inset 0 -1px 0 rgba(0, 0, 0, 0.35);
+  --lg-shadow-floating: 0 16px 40px rgba(0, 0, 0, 0.45), 0 3px 10px rgba(0, 0, 0, 0.5);
+  --lg-shadow-button: 0 4px 18px rgba(0, 0, 0, 0.32), 0 1px 3px rgba(0, 0, 0, 0.45);
+}
+
+/* Base Glass Container with Directional Hairline */
+.liquid-glass-panel {
+  position: relative;
+  background: var(--lg-regular-bg);
+  backdrop-filter: blur(var(--lg-regular-blur)) saturate(var(--lg-regular-saturate));
+  -webkit-backdrop-filter: blur(var(--lg-regular-blur)) saturate(var(--lg-regular-saturate));
+  box-shadow: var(--lg-shadow-floating), var(--lg-inner-highlight);
+  transform: translateZ(0);
+  will-change: transform, box-shadow;
+  transition: box-shadow 0.2s ease;
+}
+
+.liquid-glass-panel.clear-variant {
+  background: var(--lg-clear-bg);
+  backdrop-filter: blur(var(--lg-clear-blur)) saturate(180%);
+  -webkit-backdrop-filter: blur(var(--lg-clear-blur)) saturate(180%);
+}
+
+/* Directional gradient hairline via mask composite (1px retina hairline) */
+.liquid-glass-panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: var(--lg-edge-hairline);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Glass Interactive Buttons */
+.liquid-glass-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: var(--lg-shadow-button), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  border-radius: 9999px;
+  transform: translateZ(0);
+  touch-action: manipulation;
+  color: #fff;
+  transition: background 0.15s ease, transform 0.1s ease;
+}
+
+.liquid-glass-btn:hover {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.liquid-glass-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.35) 0%,
+    rgba(255, 255, 255, 0.12) 50%,
+    rgba(255, 255, 255, 0.03) 100%
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* Top Edge Glass Veil */
+.liquid-glass-top-veil {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: calc(90px + env(safe-area-inset-top, 0px));
+  padding-top: env(safe-area-inset-top, 0px);
+  pointer-events: none;
+  z-index: 80;
+  
+  background: linear-gradient(
+    to bottom,
+    rgba(11, 15, 20, 0.92) 0%,
+    rgba(11, 15, 20, 0.65) 45%,
+    rgba(11, 15, 20, 0.15) 80%,
+    rgba(11, 15, 20, 0) 100%
+  );
+  
+  backdrop-filter: blur(20px) saturate(140%);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+  
+  mask-image: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 0.9) 35%,
+    rgba(0, 0, 0, 0.4) 75%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 0.9) 35%,
+    rgba(0, 0, 0, 0.4) 75%,
+    rgba(0, 0, 0, 0) 100%
+  );
+}
+
+/* Full page layout styling */
+.lg-app {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background-color: #0b0f14;
+}
+
+.lg-ambient-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.lg-content-scroll {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  padding: calc(90px + env(safe-area-inset-top, 0px)) 20px calc(110px + env(safe-area-inset-bottom, 0px)) 20px;
+}
+
+.lg-conversation-container {
+  max-width: 680px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.lg-message-row {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.lg-message-row.user {
+  align-items: flex-end;
+}
+
+.lg-message-row.assistant {
+  align-items: flex-start;
+}
+
+.lg-bubble {
+  max-width: 82%;
+  padding: 12px 18px;
+  border-radius: 20px;
+  font-size: 15px;
+  line-height: 1.55;
+  letter-spacing: -0.15px;
+}
+
+.lg-bubble.user {
+  background: #2563eb;
+  color: #fff;
+  border-bottom-right-radius: 4px;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
+}
+
+.lg-bubble.assistant {
+  border-bottom-left-radius: 4px;
+  color: rgba(255, 255, 255, 0.94);
+}
+
+.lg-message-time {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.4);
+  margin-top: 5px;
+  padding: 0 4px;
+}
+
+/* Floating Input Dock */
+.lg-input-dock {
+  position: fixed;
+  bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  padding: 0 16px;
+  pointer-events: none;
+  z-index: 50;
+}
+
+.lg-input-wrapper {
+  width: 100%;
+  max-width: 680px;
+  pointer-events: auto;
+}
+
+/* Reduced motion accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .liquid-glass-panel,
+  .liquid-glass-btn {
+    transition: none !important;
+    animation: none !important;
+  }
+}
